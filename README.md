@@ -15,13 +15,64 @@ A demo of using KotlinJS/kotlinx.html with JQuery
 
 今天在 Slack 上看到个 Kotlin 大佬说这个 [ts2kt项目](https://github.com/Kotlin/ts2kt) 确实是有问题的，然后他提供了个规范好的 JQuery 的类型声明文件，然后就可以直接拿来用了，这样就解决问题了。
 
-## 如何使用
+## 使用
 
 1. Clone 这个项目
-2. Maven导入依赖
+2. Maven 导入依赖
 3. Maven 执行 clean
 4. Maven 执行 package
 5. 打开 index.html 就能看到效果 
 
 每次修改完 Kotlin 源代码之后，Maven 执行一下 compile 就能更新生成的 js 文件了。
 
+## 效果
+
+Kotlin 代码：
+
+```kotlin
+fun main(args: Array<String>) {
+    window.onload = { _ ->
+        kotlinDslDoSomething()
+        jqueryDoSomething()
+    }
+}
+
+/**
+ * DSL build HTML And append to body
+ */
+fun kotlinDslDoSomething() {
+    document.body?.append {
+        div {
+            val suffixInfo = "(Produced by Kotlin-HTML-DSL)"
+            id = "body_div"
+            style = "text-align:center;"
+            h1 {
+                +"I am a Header$suffixInfo"
+            }
+            (1..10).forEach {
+                div {
+                    style = "color:${if (it % 2 == 0) "green" else "blue"}"
+                    +"Line No.$it$suffixInfo"
+                }
+            }
+        }
+    }
+}
+
+/**
+ * JQuery
+ */
+fun jqueryDoSomething() {
+    val j = jQuery
+    val text = " [I am red, added by Kotlin-JQuery] "
+    j("#body_div").find("h1,div").append(
+            j("<span>")
+                    .css("color", "red")
+                    .text(text)
+    )
+}
+```
+
+将会产生如下网页：
+
+![网页效果图](attachments/example.png)
