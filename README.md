@@ -19,9 +19,8 @@ A demo of using KotlinJS/kotlinx.html with JQuery
 
 1. Clone 这个项目
 2. Maven 导入依赖
-3. Maven 执行 clean
-4. Maven 执行 package
-5. 打开 index.html 就能看到效果 
+3. Maven 执行 package
+4. 打开 index.html 就能看到效果 
 
 每次修改完 Kotlin 源代码之后，Maven 执行一下 compile 就能更新生成的 js 文件了。
 
