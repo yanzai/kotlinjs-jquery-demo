@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.yanzai</groupId>
+    <artifactId>kotlinjs-jquery-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>net.yanzai kotlinjs-jquery-demo</name>
+
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <name>jcenter</name>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+        <repository>
+            <id>kotlin-js-externals</id>
+            <name>Kotlin/JS externals</name>
+            <url>https://kotlin.bintray.com/js-externals</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.version>1.2.51</kotlin.version>
+        <junit.version>4.12</junit.version>
+        <kotlinx.html.version>0.6.11</kotlinx.html.version>
+        <kotlinjs.jquery.version>3.2.0-0</kotlinjs.jquery.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-js</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <!-- kotlinx-html-js -->
+        <!-- Kotlin DSL for HTML -->
+        <!-- See: https://github.com/Kotlin/kotlinx.html -->
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-html-js</artifactId>
+            <version>${kotlinx.html.version}</version>
+        </dependency>
+        <!-- 说明一下，因为ts2kt目前好像还有很多的问题。 -->
+        <!-- kotlinlang slack 里面的大佬也说了，他们正在致力于解决这些问题。 -->
+        <!-- 然后大佬给出了一些固定版本的规范好的jQuery类声明文件，位于这里 https://bintray.com/kotlin/js-externals/kotlin-js-jquery -->
+        <!-- 所以就有了下面这个依赖。 -->
+        <!-- See: https://github.com/Kotlin/js-externals -->
+        <dependency>
+            <groupId>kotlin.js.externals</groupId>
+            <artifactId>kotlin-js-jquery</artifactId>
+            <version>${kotlinjs.jquery.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <version>${kotlin.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>js</goal>
+                        </goals>
+                        <configuration>
+                            <sourceMap>true
+                            </sourceMap> <!-- source map is useful for debugging in tools that support source maps -->
+                            <outputFile>${project.build.outputDirectory}/${project.artifactId}.js</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- unpack kotlin.js to target/classes/lib for example index.html -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>extract-kotlinjs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!-- kotlinx-html-js Aslo as a js lib -->
+                            <includeArtifactIds>kotlin-stdlib-js,kotlinx-html-js</includeArtifactIds>
+                            <outputDirectory>${build.outputDirectory}/lib</outputDirectory>
+                            <includes>**\/*.js</includes>
+                            <excludes>**\/*.meta.js</excludes> <!-- we don't need meta.js files in runtime -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

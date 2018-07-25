@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Test page</title>
+
+    <!-- include kotlin runtime (run mvn package to get it there) -->
+    <script type="text/javascript" src="target/classes/lib/kotlin.js"></script>
+    <!-- A kotlinx.html library provides DSL to build HTML -->
+    <script type="text/javascript" src="target/classes/lib/kotlinx-html-js.js"></script>
+
+    <!-- 说明一下，ts2kt目前好像还有很多的问题。 -->
+    <!-- kotlinlang slack 里面的大佬也说了，他们正在致力于解决这些问题。 -->
+    <!-- 然后大佬给出了一些固定版本的规范好的jQuery类声明文件，位于这里 https://bintray.com/kotlin/js-externals/kotlin-js-jquery -->
+    <!-- 因此，为了最大程度的配合，这里我也用了jquery的3.2.0版本 -->
+    <script type="text/javascript" src="lib/jquery-3.2.0.min.js"></script>
+
+    <!-- your compiled script (run mvn compile to get it up to date) -->
+    <!-- see src/main/kotlin/net/yanzai/Hello.kt for implementation -->
+    <script type="text/javascript" src="target/classes/kotlinjs-jquery-demo.js"></script>
+
+</head>
+
+<body>
+</body>
+
+</html>
