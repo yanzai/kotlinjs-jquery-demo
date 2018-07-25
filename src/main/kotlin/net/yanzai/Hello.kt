@@ -23,6 +23,9 @@ fun main(args: Array<String>) {
     }
 }
 
+/**
+ * DSL build HTML And append to body
+ */
 fun kotlinDslDoSomething() {
     document.body?.append {
         div {
@@ -42,6 +45,9 @@ fun kotlinDslDoSomething() {
     }
 }
 
+/**
+ * JQuery
+ */
 fun jqueryDoSomething() {
     val j = jQuery
     val text = " [I am red, added by Kotlin-JQuery] "
